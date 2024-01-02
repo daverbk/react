@@ -1,51 +1,50 @@
 import { Component } from 'react';
+import CardList from "./components/card-list/card-list.component";
 import './App.css';
+import SearchBox from "./components/search-box/search-box.component";
 
 class App extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            monsters : []
+            monsters : [],
+            searchField : ''
         };
 
-        console.log('constructor')
     }
 
     componentDidMount() {
-        console.log('componentDidMount')
-        this.fetchMonsters()
-    }
-
-    fetchMonsters() {
         fetch('https://jsonplaceholder.typicode.com/users')
             .then(response => response.json())
             .then(users => this.setState(() => {
                 return { monsters : users }
-            }, () => console.log(users)));
+            }));
+    }
+
+    onSearchChange = (event) => {
+        const searchField = event.target.value.toLowerCase();
+        this.setState(() => {
+            return { searchField };
+        });
     }
 
     render() {
-        console.log('render')
+        const { monsters, searchField } = this.state;
+        const { onSearchChange } = this;
+
+        const filteredMonsters = monsters.filter(m => {
+            return m.name.toLowerCase().includes(searchField);
+        });
+
         return (
             <div className='App'>
-                <input className='search-box' type='search' placeholder='search monsters' onChange={ (event) => {
-                    this.setState(() => {
-                            this.fetchMonsters();
-                        },
-                        () => {
-                            const monsters = this.state.monsters.filter(m => m.name.toLowerCase().includes(event.target.value.toLowerCase()));
-                            console.log(monsters);
-                            return { monsters : monsters }
-                        })
-                } }/>
-                { this.state.monsters.map((monster) => {
-                    return (
-                        <div key={ monster.id }>
-                            <h1>{ monster.name }</h1>
-                        </div>
-                    )
-                }) }
+                <SearchBox
+                    onChangeHandler={ onSearchChange }
+                    placeholder={ 'monster search' }
+                    className={ 'search-box' }
+                />
+                <CardList monsters={ filteredMonsters }/>
             </div>);
 
     }
