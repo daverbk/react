@@ -11,7 +11,6 @@ class App extends Component {
             monsters : [],
             searchField : ''
         };
-
     }
 
     componentDidMount() {
@@ -39,14 +38,15 @@ class App extends Component {
 
         return (
             <div className='App'>
+                <h1 className='app-title'>Monsters</h1>
+
                 <SearchBox
                     onChangeHandler={ onSearchChange }
                     placeholder={ 'monster search' }
-                    className={ 'search-box' }
+                    className={ 'monsters-search-box' }
                 />
                 <CardList monsters={ filteredMonsters }/>
             </div>);
-
     }
 }
 
