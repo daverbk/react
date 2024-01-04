@@ -25,6 +25,9 @@ const App = () => {
         setSearchField(searchField);
     }
 
+    console.log(monsters)
+    console.log(filteredMonsters)
+    console.log(searchField)
     return (<div className='App'>
         <h1 className='app-title'>Monsters</h1>
         <SearchBox
